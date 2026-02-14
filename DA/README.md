@@ -1,4 +1,5 @@
-Fundamentals of Data Analytics: Foundations, Processes, and Infrastructure
+# Unit-1 DA
+##Fundamentals of Data Analytics: Foundations, Processes, and Infrastructure
 
 Executive Summary
 
@@ -118,3 +119,4 @@ The field relies on Data Analysts, Data Scientists, and Data Engineers working t
 * Technical: Proficiency in SQL, Python (Pandas, NumPy, Matplotlib), R, and Excel. Familiarity with Machine Learning libraries (Scikit-learn) and Big Data tools (Hadoop, Spark).
 * Analytical: Critical thinking, problem-solving, and a strong grasp of statistics (regression, hypothesis testing).
 * Soft Skills: Clear communication for translating complex findings and effective time management.
+---
