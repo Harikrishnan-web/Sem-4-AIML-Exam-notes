@@ -3,7 +3,9 @@ Fundamentals of Data Analytics: Foundations, Processes, and Infrastructure
 Executive Summary
 
 [![Watch the Video](https://img.shields.io/badge/Play_Video-Unit--1_AI_Generated-blue?style=for-the-badge&logo=googledrive)](https://drive.google.com/file/d/1ELYmM9dnzRDYTlRqjEOH0zeiLEUnt5pC/view?usp=sharing)
-[![PDF for revision](https://img.shields.io/badge/Play_Video)](https://github.com/Harikrishnan-web/Sem-4-AIML-Exam-notes/blob/main/DA/AI%20Generated%20Content/Unit%201%20AI%20generated%20PDF%20for%20revision.pdf)
+
+
+[![PDF for revision](Open Video)](https://github.com/Harikrishnan-web/Sem-4-AIML-Exam-notes/blob/main/DA/AI%20Generated%20Content/Unit%201%20AI%20generated%20PDF%20for%20revision.pdf)
 
 Data analytics is the science of examining raw data to uncover meaningful trends, patterns, and insights, serving as a critical driver for modern organizational decision-making. By transforming raw information into actionable intelligence, analytics enables businesses to improve efficiency, solve complex problems, and identify growth opportunities. The discipline is categorized into four primary types—Descriptive, Diagnostic, Predictive, and Prescriptive—each answering a specific business question ranging from "what happened" to "how can we make it happen." Successful implementation requires a robust lifecycle (the Data Analysis Process), specialized infrastructure (Data Warehouses, Data Lakes, and ETL pipelines), and a highly skilled workforce proficient in programming, statistics, and visualization.
 
