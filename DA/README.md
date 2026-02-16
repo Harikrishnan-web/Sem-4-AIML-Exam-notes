@@ -1,4 +1,3 @@
-[![Click this button](https://img.shields.io/badge/AI_generated_content-blue?style=for-the-badge&logo=googledrive)](https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc)
 # Unit-1 DA
 ## Fundamentals of Data Analytics: Foundations, Processes, and Infrastructure
 
