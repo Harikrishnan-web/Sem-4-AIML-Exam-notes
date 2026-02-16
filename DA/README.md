@@ -123,7 +123,7 @@ The field relies on Data Analysts, Data Scientists, and Data Engineers working t
 # Unit - 2 DA
 ## Descriptive Data Analysis and Statistical Methodologies
 
-[![Watch the Video](https://img.shields.io/badge/Play_Video-Unit--1_AI_Generated-blue?style=for-the-badge&logo=googledrive)](https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc)
+[![Watch the Video](https://img.shields.io/badge/Play_Video-Unit--1_AI_Generated-blue?style=for-the-badge&logo=googledrive)]([https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc](https://drive.google.com/file/d/1RESsSE0dntGNY9mweb6x0accA6NakLav/view?usp=sharing))
 
 
 [![Unit 1 PDF](https://img.shields.io/badge/View_pdf-Unit_1_PDF-blue?style=for-the-badge&logo=googledrive&logoColor=FFD04B)](https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc)
