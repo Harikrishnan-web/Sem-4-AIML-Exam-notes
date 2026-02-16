@@ -1,12 +1,10 @@
+[![Click this button](https://img.shields.io/badge/AI_generated_content-blue?style=for-the-badge&logo=googledrive)](https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc)
 # Unit-1 DA
 ## Fundamentals of Data Analytics: Foundations, Processes, and Infrastructure
 
 Executive Summary
 
-[![Watch the Video](https://img.shields.io/badge/Play_Video-Unit--1_AI_Generated-blue?style=for-the-badge&logo=googledrive)](https://drive.google.com/file/d/1ELYmM9dnzRDYTlRqjEOH0zeiLEUnt5pC/view?usp=sharing)
 
-
-[![Unit 1 PDF](https://img.shields.io/badge/View_pdf-Unit_1_PDF-blue?style=for-the-badge&logo=googledrive&logoColor=FFD04B)](https://drive.google.com/file/d/1c3SqwgTClrUzWiqQw-BOHxibFLFMTasl/view?usp=drive_link)
 
 Data analytics is the science of examining raw data to uncover meaningful trends, patterns, and insights, serving as a critical driver for modern organizational decision-making. By transforming raw information into actionable intelligence, analytics enables businesses to improve efficiency, solve complex problems, and identify growth opportunities. The discipline is categorized into four primary types—Descriptive, Diagnostic, Predictive, and Prescriptive—each answering a specific business question ranging from "what happened" to "how can we make it happen." Successful implementation requires a robust lifecycle (the Data Analysis Process), specialized infrastructure (Data Warehouses, Data Lakes, and ETL pipelines), and a highly skilled workforce proficient in programming, statistics, and visualization.
 
@@ -122,11 +120,6 @@ The field relies on Data Analysts, Data Scientists, and Data Engineers working t
 ---
 # Unit - 2 DA
 ## Descriptive Data Analysis and Statistical Methodologies
-
-[![Watch the Video](https://img.shields.io/badge/Play_Video-Unit--1_AI_Generated-blue?style=for-the-badge&logo=googledrive)]([https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc](https://drive.google.com/file/d/1RESsSE0dntGNY9mweb6x0accA6NakLav/view?usp=sharing))
-
-
-[![Unit 1 PDF](https://img.shields.io/badge/View_pdf-Unit_1_PDF-blue?style=for-the-badge&logo=googledrive&logoColor=FFD04B)](https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc)
 
 Executive Summary
 
