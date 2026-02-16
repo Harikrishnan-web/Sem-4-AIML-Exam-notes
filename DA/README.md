@@ -121,7 +121,12 @@ The field relies on Data Analysts, Data Scientists, and Data Engineers working t
 * Soft Skills: Clear communication for translating complex findings and effective time management.
 ---
 # Unit - 2 DA
-Descriptive Data Analysis and Statistical Methodologies
+## Descriptive Data Analysis and Statistical Methodologies
+
+[![Watch the Video](https://img.shields.io/badge/Play_Video-Unit--1_AI_Generated-blue?style=for-the-badge&logo=googledrive)](https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc)
+
+
+[![Unit 1 PDF](https://img.shields.io/badge/View_pdf-Unit_1_PDF-blue?style=for-the-badge&logo=googledrive&logoColor=FFD04B)](https://drive.google.com/drive/u/1/folders/1RqTBIrLIfmgjI5lHVF8Ij230DxfC2-Yc)
 
 Executive Summary
 
