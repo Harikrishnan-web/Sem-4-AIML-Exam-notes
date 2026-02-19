@@ -4,7 +4,7 @@
 
 **Aim:** To implement Linear Search and determine the time required to search for an element.
 
-```c
+```
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -64,7 +64,7 @@ Time taken: 0.000032 seconds
 
 **Aim:** To implement recursive Binary Search and determine the time required to search for an element.
 
-```c
+```
 #include <stdio.h>
 #include <time.h>
 
@@ -109,7 +109,7 @@ Time taken: 0.000002
 
 **Aim:** To print all occurrences of a pattern `pat[]` in a text `txt[]`.
 
-```c
+```
 #include <stdio.h>
 #include <string.h>
 
@@ -148,7 +148,7 @@ Pattern found at index 13
 
 **Aim:** To sort elements using Insertion and Heap sort and determine time complexity.
 
-```c
+```
 #include <stdio.h>
 #include <time.h>
 
@@ -202,7 +202,7 @@ Sorted array: 5 6 11 12 13
 
 **Aim:** To implement graph traversal using Breadth First Search.
 
-```c
+```
 #include <stdio.h>
 #include <stdlib.h>
 
