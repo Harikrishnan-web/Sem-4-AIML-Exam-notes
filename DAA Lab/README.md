@@ -1,4 +1,4 @@
-Here is the C code for the first five experiments as detailed in your DAA Lab Manual.
+
 
 ---
 
@@ -247,4 +247,3 @@ BFS Traversal starting from vertex 0: 0 1 2 3
 
 ```
 
-Would you like me to provide the code for the remaining experiments (6–15) as well?
