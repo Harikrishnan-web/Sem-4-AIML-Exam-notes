@@ -285,7 +285,7 @@ int main(){
 
 * Compact versions for quick record writing
 * Single combined file version for submission
-'''c
+```c
 #include <stdio.h>
 #include <conio.h>
 #include <graphics.h>
@@ -355,4 +355,4 @@ int main()
     closegraph();
     return 0;
 }
-'''
+```
