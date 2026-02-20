@@ -1,3 +1,5 @@
+
+
 ---
 
 # ✅ EXPERIMENT 1
@@ -279,3 +281,6 @@ int main(){
 | BFS            | Linear Growth   | O(V + E)   |
 
 ---
+
+* Compact versions for quick record writing
+* Single combined file version for submission
