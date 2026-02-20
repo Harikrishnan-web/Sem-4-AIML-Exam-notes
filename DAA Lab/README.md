@@ -281,6 +281,78 @@ int main(){
 | BFS            | Linear Growth   | O(V + E)   |
 
 ---
+# Insertion sort
 
 * Compact versions for quick record writing
 * Single combined file version for submission
+'''c
+#include <stdio.h>
+#include <conio.h>
+#include <graphics.h>
+#include <time.h>
+
+void insertionSort(int a[], int n)
+{
+    int i, key, j;
+    for(i = 1; i < n; i++)
+    {
+        key = a[i];
+        j = i - 1;
+
+        while(j >= 0 && a[j] > key)
+        {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = key;
+    }
+}
+
+int main()
+{
+    int gd = DETECT, gm;
+    int best[10]  = {10,20,30,40,50,60,70,80,90,100};   // Best case
+    int worst[10] = {100,90,80,70,60,50,40,30,20,10};   // Worst case
+    clock_t start, end;
+    double time_best, time_worst;
+    int i;
+
+    clrscr();
+    initgraph(&gd, &gm, "C:\\TURBOC3\\BGI");
+
+    line(50, 400, 600, 400);
+    line(50, 50, 50, 400);
+
+    outtextxy(200, 420, "Case");
+    outtextxy(10, 30, "Time");
+
+    printf("Insertion Sort Time Analysis\n");
+
+    // -------- BEST CASE --------
+    start = clock();
+    insertionSort(best, 10);
+    end = clock();
+    time_best = (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("Best Case Time  = %f\n", time_best);
+
+    // -------- WORST CASE --------
+    start = clock();
+    insertionSort(worst, 10);
+    end = clock();
+    time_worst = (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("Worst Case Time = %f\n", time_worst);
+
+    // Plot points
+    putpixel(150, 400 - (time_best * 100000), WHITE);
+    putpixel(300, 400 - (time_worst * 100000), RED);
+
+    outtextxy(130, 410, "Best");
+    outtextxy(280, 410, "Worst");
+
+    getch();
+    closegraph();
+    return 0;
+}
+'''
