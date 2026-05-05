@@ -99,3 +99,68 @@ Since disk platters are mechanical and have microscopic tolerances, it is common
 *   **Sector Sparing (Forwarding):** Modern disks set aside a collection of "spare sectors" that the OS cannot see. If a block goes bad during the disk's life, the controller can be told to "spare" it. It maps the bad logical address to one of the healthy physical spare sectors. To the OS, the disk still appears to have its full capacity.
 *   **Sector Slipping:** As an alternative, if a block (e.g., sector 17) goes bad, the controller can shift all subsequent sectors down by one position. Sector 18 becomes 17, 19 becomes 18, and so on, until a spare sector is used up at the end of the track. This keeps the logical blocks in a contiguous physical string for better performance.
 ---
+### **FILE SYSTEM STORAGE**
+
+The file system provides the mechanism for on-line storage and access to both data and programs of the operating system and all computer users. It consists of two distinct parts: a collection of files, each storing related data, and a directory structure which organizes and provides information about all files in the system.
+
+
+### **1. FILE CONCEPTS**
+A file is defined as a named collection of related information that is stored on a secondary storage device. It is an abstract data type.
+*   **Nature:** Files can store various information types, including source or executable programs, numeric or text data, photos, music, and video.
+*   **Structures:**
+    *   **Text File:** A sequence of characters organized into lines.
+    *   **Source File:** A sequence of functions, organized as declarations followed by executable statements.
+    *   **Executable File:** A series of code sections that the loader can bring into memory and execute.
+
+
+
+### **2. FILE ATTRIBUTES**
+Attributes vary by operating system but typically include:
+*   **Name:** Information kept in human-readable form.
+*   **Identifier:** A unique tag (usually a number) that identifies the file within the file system.
+*   **Type:** Needed for systems that support different file formats.
+*   **Location:** A pointer to the device and the specific location of the file on that device.
+*   **Size:** The current size of the file in bytes, words, or blocks.
+*   **Protection:** Access-control information determining who can read, write, or execute the file.
+*   **Time, Date, and User ID:** Kept for creation, last modification, and last use.
+
+
+
+### **3. OPEN FILE TABLE**
+To avoid the overhead of searching the directory for every file operation, the operating system uses internal tables to track active files.
+*   **Mechanism:** When a file is opened, its entry is copied into the open-file table. Subsequent operations use an index into this table rather than the filename.
+*   **Two-Level Structure:**
+    *   **Per-Process Table:** Tracks files an individual process has open, including the current file-position pointer and access rights.
+    *   **System-Wide Table:** Contains process-independent information, such as the location on disk, access dates, and file size.
+*   **Open Count:** A counter tracks how many processes have the file open. When the count reaches zero, the entry is removed from the table.
+
+
+
+
+
+### **4. FILE LOCKS**
+File locks allow a process to restrict access to a file by other processes, which is essential for shared files.
+*   **Shared Lock:** Similar to a reader lock; multiple processes can acquire it concurrently.
+*   **Exclusive Lock:** Similar to a writer lock; only one process can hold it at a time.
+*   **Types of Implementation:**
+    *   **Mandatory:** The OS strictly prevents any other process from accessing a locked file.
+    *   **Advisory:** The OS provides the lock status, but it is up to the processes to check the lock and decide whether to proceed.
+
+
+
+### **5. FILE ACCESS METHODS**
+Information in a file can be accessed in several ways depending on the application requirements.
+*   **Sequential Access:** The simplest method. Information is processed in order, one record after the other. Operations include `read next()` and `write next()`.
+*   **Direct Access (Random Access):** The file is viewed as a numbered sequence of blocks or records. Programs can read or write records rapidly in no particular order using a block number (e.g., `read(n)`).
+*   **Indexed Access:** Involves building an index for the file. The index contains pointers to various blocks. To find a record, the system searches the index first and then uses the pointer to access the data directly.
+
+
+
+
+
+### **6. FILE SYSTEM MOUNTING**
+File system mounting is the process of attaching an additional file system to the currently accessible file structure of a computer.
+*   **Mount Point:** This is the location within the file structure where the new file system is attached. It is typically an empty directory.
+*   **Process:** The operating system is given the name of the device and the mount point. Once mounted, the directory structure of the new device becomes a subdirectory at that mount point.
+*   **Example:** Mounting a volume containing user home directories under `/users` allows a file named `Jane` to be accessed via the path `/users/Jane`.
+---
