@@ -188,3 +188,86 @@ File system mounting is the process of attaching an additional file system to th
 *   **Process:** The operating system is given the name of the device and the mount point. Once mounted, the directory structure of the new device becomes a subdirectory at that mount point.
 *   **Example:** Mounting a volume containing user home directories under `/users` allows a file named `Jane` to be accessed via the path `/users/Jane`.
 ---
+### **DIRECTORY AND DISK STRUCTURE**
+
+The directory is a symbol table that translates file names into their directory entries. It is essential for organizing files across various disk partitions or volumes.
+
+#### **Operations Performed on a Directory**
+To manage files effectively, a directory must support several fundamental operations:
+*   **Search for a file:** Finding a specific entry when a file is referenced by name.
+*   **Create a file:** Adding a new entry to the directory.
+*   **Delete a file:** Removing an entry when a file is no longer needed.
+*   **List a directory:** Displaying all files and their attributes.
+*   **Rename a file:** Changing the name of an existing entry.
+*   **Traverse the file system:** Navigating through different directory levels to access files.
+
+
+### **1. Single-Level Directory**
+In this simplest structure, all files are contained in a single directory for all users.
+
+
+
+*   **Advantages:**
+    *   Extremely easy to implement and manage.
+    *   Ideal for small systems with a limited number of files or a single user.
+*   **Disadvantages:**
+    *   **Naming Collisions:** Every file must have a unique name because they all share the same namespace.
+    *   **Grouping Issues:** As the number of files grows, it becomes difficult for users to remember all names or organize related files together.
+
+
+
+### **2. Two-Level Directory**
+To solve naming conflicts between different users, each user is given their own **User File Directory (UFD)**. A **Master File Directory (MFD)** is used to index these UFDs by username or account number.
+
+
+
+*   **Advantages:**
+    *   **Solves Naming Collisions:** Two different users can have files with the exact same name (e.g., both can have a "test.doc") because they are stored in different UFDs.
+    *   **Isolation:** Provides a basic level of privacy and organization by separating user files.
+*   **Disadvantages:**
+    *   **Isolation Obstacles:** It is difficult for users to cooperate on a project or share files because each user is effectively "locked" in their own directory.
+    *   **Lack of Internal Grouping:** Users still cannot create subdirectories within their own UFD to organize their own files.
+
+
+
+### **3. Tree-Structured Directory**
+This is the most common directory structure. It extends the two-level approach into a tree of arbitrary height, allowing users to create their own subdirectories to organize files.
+
+
+
+*   **Advantages:**
+    *   **Efficient Searching:** Pathnames (Absolute or Relative) allow for very fast navigation to specific files.
+    *   **Deep Organization:** Users can group files logically (e.g., a "Projects" folder containing "Math" and "Science" subfolders).
+    *   **Namespace Flexibility:** The same filename can be used in different branches of the tree without conflict.
+*   **Disadvantages:**
+    *   **Complexity:** Managing the tree (especially deleting non-empty directories) requires more complex logic.
+    *   **Access Overhead:** Accessing a file deep in the tree may require the system to follow multiple directory pointers, which can slightly increase I/O time if the directory levels are not cached.
+
+### **4) Acyclic Graph Directories**
+
+An acyclic graph is a directory structure that allows for no cycles, permitting directories to share subdirectories and files. This means the same file or subdirectory may appear in two or more different directories simultaneously. With a shared file, only one actual physical file exists; therefore, any changes made by one user are immediately visible to all others who share the file.
+
+#### **Shared File Implementation**
+Shared files and subdirectories are typically implemented in one of two ways:
+*   **Links:** A new directory entry called a "link" is created, which serves as a pointer to the actual file or subdirectory. When a file is referenced, the system searches the directory; if it finds a link, it resolves the path name to locate the real file.
+*   **Duplicate Entries:** All information about the shared file is duplicated in both sharing directories. However, this method faces major consistency problems if the file is modified.
+
+#### **File Deletion**
+Deleting files in an acyclic graph is more complex than in a tree structure:
+*   **Dangling Pointers:** If a file is removed whenever any user deletes it, other users may be left with "dangling pointers" that point to a non-existent file.
+*   **Link Removal:** One method is to only delete the link, leaving the original file intact for other users.
+*   **Reference Counting:** The most robust approach is to preserve the file until all references to it are deleted. The system keeps a file-reference list or a counter; the file is only physically deleted when this list is empty or the count reaches zero.
+
+
+
+### **5) General Graph Directory**
+
+When links are added to a tree-structured directory, the tree nature is destroyed, resulting in a general graph structure. This allows for the possibility of cycles within the directory.
+
+*   **Cycles:** If cycles are allowed, the system must be designed to avoid searching the same component twice to maintain performance.
+*   **Reference Counts and Cycles:** In a general graph, a reference count of zero still means the file can be deleted. However, if cycles exist, the reference count may never reach zero even when the file is no longer accessible by any user.
+*   **Garbage Collection:** To handle cycles, systems use garbage collection. This involves a two-pass process:
+    *   **First Pass:** The system traverses the entire file structure and marks everything that can be accessed.
+    *   **Second Pass:** The system collects everything that is not marked and adds it to a free-space list for reallocation.
+
+---
