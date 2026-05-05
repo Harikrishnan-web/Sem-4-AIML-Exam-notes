@@ -399,3 +399,91 @@ In multilevel directory structures, protection must extend beyond individual fil
 *   **Mechanism:** Special mechanisms are required to control who can create or delete files within a specific directory.
 *   **Difference:** Directory protection operations differ from file operations because they manage the "container" rather than the data itself.
 ---
+### **FILE SYSTEM STRUCTURE**
+
+The file system provides the mechanism for on-line storage and access to file contents, including data and programs. It resides permanently on secondary storage (disks), which allow for data to be rewritten in place and accessed directly.
+
+#### **Layered File System Architecture**
+To manage the complexity of mapping logical files to physical disk blocks, file systems are organized into layers:
+
+*   **I/O Control:** The lowest level, consisting of device drivers and interrupt handlers that transfer information between main memory and the disk system.
+*   **Basic File System:** Issues generic commands to device drivers to read and write physical blocks. It also manages memory buffers and caches for metadata to improve performance.
+*   **File Organization Module:** Translates logical block addresses (the file's internal numbering) into physical block addresses (the disk's numbering) and tracks free space.
+*   **Logical File System:** Manages the directory structure and metadata. It maintains file structure via **File Control Blocks (FCB)**.
+
+**Advantages of Layering:** 
+*   **Minimal Code Duplication:** Shared layers (like I/O control) can serve multiple file systems.
+*   **Modularity:** Different file system types can be supported on the same hardware by changing only the upper layers.
+
+**Disadvantages:**
+*   **Complexity:** Deciding the number and function of layers is a significant design challenge.
+*   **Performance Overhead:** Data must pass through multiple software layers, which can add latency.
+
+#### **Example File Systems**
+*   **UNIX:** Uses the UNIX File System (UFS), based on the Fast File System (FFS).
+*   **Windows:** Supports FAT, FAT32, and NTFS (Windows NT File System).
+*   **Linux:** Supports over 40 file systems, standardizing on the Extended File System (ext3, ext4).
+
+### **ON-DISK & IN-MEMORY STRUCTURES**
+
+#### **Key On-Disk Structures**
+*   **Boot Control Block:** Contains information needed to boot the operating system from a volume (e.g., the MBR or partition boot sector).
+*   **Volume Control Block:** Contains partition details, such as block size, block count, and pointers to free blocks (e.g., the superblock).
+*   **Directory Structure:** Organizes the files (e.g., inode numbers in UFS).
+*   **File Control Block (FCB):** Stores file permissions, size, dates, and data block pointers.
+
+
+
+#### **Key In-Memory Structures**
+*   **Mount Table:** Information about each mounted volume.
+*   **Directory-Structure Cache:** Stores recently accessed directory info.
+*   **System-Wide Open-File Table:** Contains a copy of the FCB for every file currently open by any process.
+*   **Per-Process Open-File Table:** A pointer to the system-wide table for files open by a specific process, along with the process's current file pointer.
+
+
+
+### **PARTITIONING AND MOUNTING**
+*   **Partitioning:** A disk can be sliced into multiple partitions (raw or cooked). **Raw disks** have no file system (used for swap space or databases), while **cooked disks** contain a file system.
+*   **Mounting:** The root partition is mounted at boot. Other file systems are attached to the hierarchy at a **mount point** (an empty directory). Windows mounts volumes to drive letters (e.g., C:), while UNIX integrates them into a single tree.
+
+
+### **VIRTUAL FILE SYSTEMS (VFS)**
+Modern OSs use a VFS layer to allow different file system types (local and remote) to appear the same to application programs.
+*   **Interface Layer:** Provides standard calls like `open()` and `read()`.
+*   **VFS Layer:** Separates generic operations from specific implementations and uses **vnodes** to uniquely represent files across a network.
+
+
+
+
+
+### **FILE / DISK ALLOCATION TECHNIQUES**
+
+#### **1. Contiguous Allocation**
+Each file occupies a set of contiguous blocks on the disk.
+*   **Advantage:** Minimal seek time; easy to implement.
+*   **Disadvantage:** **External Fragmentation** (free space becomes fragmented over time) and difficulty in predicting file growth.
+
+#### **2. Linked Allocation**
+Files are stored as a linked list of disk blocks.
+*   **Advantage:** No external fragmentation; files can grow easily.
+*   **Disadvantage:** Inefficient for direct (random) access; pointers take up space. 
+*   **Variation:** **File-Allocation Table (FAT)** stores all pointers in one table at the start of the disk to improve performance.
+
+#### **3. Indexed Allocation**
+Each file has its own **index block**, which contains pointers to all its data blocks.
+*   **Advantage:** Supports efficient direct access without fragmentation.
+*   **Mechanisms for Large Files:**
+    *   **Linked Scheme:** Linking multiple index blocks together.
+    *   **Multilevel Index:** A first-level index points to second-level index blocks.
+    *   **Combined Scheme (UNIX Inode):** Uses direct pointers for small files and indirect/double-indirect pointers for large files.
+
+
+
+
+
+### **FREE SPACE MANAGEMENT**
+To reuse deleted file space, the system tracks free blocks using:
+*   **Bit Vector:** 1 bit per block (1 = free, 0 = allocated). Simple and efficient.
+*   **Linked List:** Linking free blocks together. Slow to traverse but easy to manage.
+*   **Grouping/Counting:** Storing addresses of groups of free blocks or a starting address plus a count of contiguous free blocks.
+---
