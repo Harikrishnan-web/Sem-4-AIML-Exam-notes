@@ -271,3 +271,131 @@ When links are added to a tree-structured directory, the tree nature is destroye
     *   **Second Pass:** The system collects everything that is not marked and adds it to a free-space list for reallocation.
 
 ---
+### **FILE SHARING AND PROTECTION**
+
+File sharing is a critical feature that allows users to collaborate, reduce redundancy, and achieve computing goals more efficiently. To support this, the operating system must manage access across multiple users and even remote systems.
+
+
+### **1) File Sharing**
+
+#### **I. Multiple Users**
+*   **Default Access vs. Explicit Grant:** Systems with multiple users can either allow access to others' files by default or require the owner to specifically grant permissions.
+*   **Owner and Group:** To implement sharing, the system uses "Owner" (the user with maximum control) and "Group" (a subset of users with shared access) attributes.
+*   **Identification:** When an operation is requested, the system compares the requesting User ID against the owner and group IDs stored in the file's attributes to determine if the action is allowed.
+
+#### **II. Remote File Systems**
+Networking enables sharing across different physical locations.
+*   **i) Client-Server Model:** A server declares resources as available, and clients seek access to them. A single server can support multiple clients, and a client can use multiple servers.
+*   **ii) Distributed Information Systems:** Also known as distributed naming services (like DNS or LDAP), these provide unified access to the information needed for remote computing, such as user IDs and passwords across a network.
+*   **iii) Failure Modes:** Remote systems are complex and can fail due to network congestion, cable failure, or corruption. Recovery often requires both the client and server to maintain "state" information about open files and current activities.
+
+
+
+### **2) Consistency Semantics**
+
+Consistency semantics specify how multiple users access a shared file simultaneously and when modifications by one user become visible to others.
+
+#### **i) Unix Semantics**
+The UNIX file system follows these rules:
+*   **Immediate Visibility:** Writes to an open file by a user are visible immediately to all other users who have that same file open.
+*   **Shared Pointers:** Users can share the "current location pointer." If one user advances the pointer, it affects all other users sharing that pointer.
+
+#### **ii) Session Semantics**
+Used by the Andrew File System (AFS):
+*   **Delayed Visibility:** Writes to an open file are **not** visible immediately to other users with the same file open.
+*   **Completion Visibility:** Changes only become visible in sessions that start **after** the file has been closed. Currently open instances do not reflect these new changes.
+
+#### **iii) Immutable Shared File Semantics**
+*   **No Modifications:** Once a creator declares a file as shared, it cannot be modified.
+*   **Fixed Properties:** An immutable file's name cannot be reused, and its contents cannot be altered.
+*   **Fixed Contents:** This signifies that the file's data is permanent and unchangeable.
+
+
+
+### **3) Protection**
+
+Protection mechanisms provide controlled access by limiting the types of operations users can perform on a file.
+
+#### **Goals of Protection**
+*   **Prevention of Misuse:** To stop malicious users or programs from intentionally damaging the system.
+*   **Policy Enforcement:** To ensure resources are used only in ways that align with system administrator or designer policies.
+*   **Damage Control:** To ensure that "errant" (buggy) programs cause the minimum amount of damage possible to the rest of the system.
+
+
+
+#### **Types of Access**
+Operations that can be controlled include:
+*   **Read:** Reading from the file.
+*   **Write:** Writing or rewriting the file.
+*   **Execute:** Loading the file into memory and running it.
+*   **Append:** Adding new information only to the end of the file.
+*   **Delete:** Removing the file and freeing its space.
+*   **List:** Listing the name and attributes of the file.
+
+### **PROTECTION: ACCESS TYPES AND CONTROL**
+
+The necessity for file protection arises directly from the ability of users to access files. Systems that prohibit access to other users' files do not require these protection mechanisms.
+
+---
+
+### **1. Types of Access**
+Operating systems control several different types of operations to ensure data integrity and security:
+*   **Read:** Allows reading the contents of the file.
+*   **Write:** Allows writing to or rewriting the file.
+*   **Execute:** Allows loading the file into memory and running it as a program.
+*   **Append:** Allows adding new information to the end of the existing file.
+*   **Delete:** Allows removing the file and freeing its disk space for reuse.
+*   **List:** Allows viewing the name and attributes of the file within a directory.
+
+These higher-level functions are often implemented by system programs that trigger lower-level system calls.
+
+
+
+### **2. Access Control Methods**
+
+#### **Access-Control List (ACL)**
+The most common approach to protection is making access dependent on user identity.
+*   **Mechanism:** An ACL is associated with each file and directory, specifying which usernames are allowed and what specific types of access they have.
+*   **Verification:** When a user requests access, the operating system checks the ACL. If the user and the requested access type are listed, access is granted; otherwise, a protection violation occurs.
+*   **Challenges:** 
+    *   Constructing long lists can be tedious.
+    *   Directory entries become variable in size, complicating space management.
+
+#### **User Classifications**
+To simplify ACLs, many systems categorize users into three groups:
+1.  **Owner:** The user who created the file.
+2.  **Group:** A specific set of users who share access and require similar permissions.
+3.  **Universe (Other):** All remaining users in the system.
+
+
+
+
+
+### **3. Protection in UNIX Systems**
+UNIX uses a condensed scheme of **9 bits** to record protection information, divided into three fields of 3 bits each (**rwx**):
+*   **r (Read):** Permission to read.
+*   **w (Write):** Permission to write.
+*   **x (Execute):** Permission to execute.
+
+These fields are applied to the **Owner**, the **Group**, and the **Universe**.
+
+**Example (book.tex):**
+*   **Owner (Sara):** Needs full control. Permissions: **rwx** (111).
+*   **Group (Students):** Need to read and write. Permissions: **rw-** (110).
+*   **Universe (Others):** Need only to read. Permissions: **r--** (100).
+
+
+### **4. Alternative: Password Protection**
+Another method involves associating a unique password with every file.
+*   **Effectiveness:** This can be highly effective if passwords are random and changed frequently.
+*   **Disadvantages:**
+    *   Users may have to remember an overwhelming number of passwords.
+    *   If a single password is used for all files, discovering it grants access to everything (all-or-none protection).
+
+
+
+### **5. Directory Protection**
+In multilevel directory structures, protection must extend beyond individual files to include subdirectories.
+*   **Mechanism:** Special mechanisms are required to control who can create or delete files within a specific directory.
+*   **Difference:** Directory protection operations differ from file operations because they manage the "container" rather than the data itself.
+---
