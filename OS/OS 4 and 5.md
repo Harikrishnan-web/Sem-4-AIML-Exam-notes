@@ -22,6 +22,12 @@ Magnetic disks provide the primary bulk of secondary storage for modern systems.
 *   **Definition:** A cylinder is the set of all tracks that are at one specific arm position.
 *   **Function:** Because the disk arm moves all read-write heads together, every head is positioned over the same track number on their respective platter surfaces simultaneously. This vertical "stack" of tracks forms the cylinder.
 
+### **Disk speed has two parts.**
+* The transfer rate is the rate at which data flow between the drive and the computer.
+* The positioning time, or random-access time
+* SEEK TIME: The time necessary to move the disk arm to the desired cylinder, is called the seek time.
+* ROTATIONAL LATENCY: The time necessary for the desired sector to rotate to the disk head, called the
+rotational latency.
 
 
 
