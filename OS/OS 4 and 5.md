@@ -124,7 +124,31 @@ Attributes vary by operating system but typically include:
 *   **Protection:** Access-control information determining who can read, write, or execute the file.
 *   **Time, Date, and User ID:** Kept for creation, last modification, and last use.
 
+### **FILE OPERATIONS:**
 
+*  A file is an abstract data type.
+
+The operating system can provide system calls to create, write, read, reposition, delete, and truncate files. The
+Basic Operations on a file includes
+Creating a File
+Writing a File
+Reading a File
+Repositioning within a File
+Deleting a file
+Truncating a file
+
+1) Creating a file: OS first finds space in the file system for the file. Second, an entry for the new file must be made in
+the directory.
+2) Writing a file. To write a file, we make a system specifying both the name of the file and the information to be
+written to the file. The system must keep a write pointer to the location in the file where the next write is to take place.
+3) Reading a file. To read from a file, we use a system call that specifies the name of the file. The system needs to
+keep a read pointer to the location in the file where the next read is to take place.
+Current File Position Pointer: Because a process is usually either reading from or writing to a file, the current
+operation location can be kept as a per-process current file- position pointer.
+4) Repositioning within a file. The directory is searched for the appropriate entry, and the current-file-position pointer
+is repositioned to a given value. This file operation is also known as files seek.
+5) Deleting a file. To delete a file, we search the directory for the named file.
+6) Truncating a file. The user may want to erase the contents of a file but keep its attributes
 
 ### **3. OPEN FILE TABLE**
 To avoid the overhead of searching the directory for every file operation, the operating system uses internal tables to track active files.
