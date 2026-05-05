@@ -487,3 +487,41 @@ To reuse deleted file space, the system tracks free blocks using:
 *   **Linked List:** Linking free blocks together. Slow to traverse but easy to manage.
 *   **Grouping/Counting:** Storing addresses of groups of free blocks or a starting address plus a count of contiguous free blocks.
 ---
+### **FREE SPACE MANAGEMENT**
+
+Because disk space is limited, the operating system must reuse the space from deleted files to accommodate new ones. To track available areas, the system maintains a **free-space list**, which records all blocks not currently allocated to a file or directory.
+
+
+
+#### **1. Bit Vector (Bit Map)**
+The free-space list is represented as a series of bits where each bit corresponds to a specific disk block.
+*   **Mechanism:** A bit is set to **1** if the block is free and **0** if it is allocated.
+*   **Example:** For a disk where blocks 2–5 and 8–13 are free, the bit map would start with bits representing those free positions as 1s.
+*   **Calculation:** To find the first free block, the system checks for the first non-zero word. The block number is calculated as: $(number\ of\ bits\ per\ word) \times (number\ of\ 0\text{-}value\ words) + offset\ of\ first\ 1\ bit$.
+*   **Pros/Cons:** It is simple and efficient for finding contiguous free blocks but becomes inefficient unless the entire vector is kept in main memory.
+
+#### **2. Linked List**
+This method links all free disk blocks together, keeping a pointer to the first free block in a special disk location.
+*   **Mechanism:** The first free block contains a pointer to the next free disk block, and so on.
+*   **Example:** If block 2 is the first free block, it points to block 3, which then points to block 4.
+*   **Pros/Cons:** This scheme is generally inefficient because traversing the list requires reading each block, which requires substantial I/O time.
+
+
+
+#### **3. Grouping**
+A modification of the linked list approach designed to find the addresses of a large number of free blocks quickly.
+*   **Mechanism:** The first free block stores the addresses of $n$ free blocks. 
+*   **Structure:** The first $n-1$ of these addresses are actually free blocks. The $n$-th address points to another block that contains the addresses of the next $n$ free blocks.
+
+#### **4. Counting**
+This method takes advantage of the fact that multiple contiguous blocks are often freed or allocated at the same time.
+*   **Mechanism:** Instead of listing every individual block, the system stores the address of the first free block and the number ($n$) of free contiguous blocks that follow it.
+*   **Structure:** Each entry in the list consists of a **disk address** and a **count**.
+*   **Storage:** For efficiency, these entries are often stored in a balanced tree rather than a simple linked list to allow for fast lookup and insertion.
+
+#### **5. Space Maps**
+Used by advanced systems like Oracle’s ZFS, space maps manage massive amounts of data by dividing devices into chunks called **Metaslabs**.
+*   **Mechanism:** Each Metaslab has an associated space map which uses log-structured techniques to record all block activity (allocating and freeing) in time order.
+*   **Operation:** When the system needs to allocate or free space, it loads the space map into a balanced-tree structure in memory and "replays" the log to find the current state.
+*   **Result:** This provides an extremely accurate and fast in-memory representation of available space for that specific Metaslab.
+---
