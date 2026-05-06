@@ -586,3 +586,46 @@ The kernel tracks the state of I/O components via internal tables:
 *   **System-wide Open File Table:** Tracks all files currently open in the system.
 *   **Device-Status Table:** Tracks the state (idle or busy) of each device and maintains a queue of pending requests for busy devices.
 ---
+### **FILE AND DIRECTORY PERMISSIONS**
+
+In multi-user operating systems, permissions are essential to protect data and ensure that users can only access or modify files for which they have authorization.
+
+#### **1. The UNIX Permission Model**
+UNIX-based systems (including Linux) use a condensed 9-bit scheme to define access. These bits are divided into three fields of three bits each, representing three classes of users:
+*   **Owner:** The user who created the file.
+*   **Group:** A set of users sharing access to the file.
+*   **Universe (Others):** All other users in the system.
+
+Each field consists of the **rwx** bits:
+*   **r (Read):** Permission to read the file contents or list a directory.
+*   **w (Write):** Permission to modify the file or create/delete files within a directory.
+*   **x (Execute):** Permission to run a file as a program or "enter" (traverse) a directory.
+
+
+
+#### **2. Access Control Lists (ACLs)**
+While the 9-bit scheme is efficient, it is limited. Many modern systems use **Access Control Lists (ACLs)** for finer granularity:
+*   **Identity Dependent:** ACLs associate a specific list of usernames and their allowed access types with each file or directory.
+*   **Verification:** When a user requests access, the OS checks the ACL for that specific user’s entry.
+*   **Management:** In Windows, these lists are typically managed through the Security tab in a file’s properties window.
+
+
+
+### **JOB SCHEDULING (CONCEPTUAL)**
+
+Job scheduling allows the operating system to execute commands or scripts automatically at specified times or intervals. This is primarily handled by two utilities in UNIX-like environments: **cron** and **at**.
+
+#### **1. cron (Recurring Tasks)**
+The `cron` daemon is used for tasks that need to run repeatedly (e.g., daily backups or weekly system updates).
+*   **Crontab:** A configuration file (cron table) where users specify the timing and the command to be executed.
+*   **Fields:** A standard cron entry consists of five fields representing Minute, Hour, Day of Month, Month, and Day of Week.
+*   **Usage:** It is the standard for system maintenance, such as log rotation or periodic report generation.
+
+
+
+#### **2. at (One-Time Tasks)**
+The `at` utility is designed for "fire and forget" tasks that only need to run once at a specific point in the future.
+*   **Execution:** Once the specified time arrives, the task is executed, and the job is removed from the queue.
+*   **Flexibility:** It accepts various time formats, such as "midnight," "noon," or specific offsets like "now + 30 minutes."
+*   **Usage:** Commonly used for one-off maintenance tasks or running resource-heavy scripts during off-peak hours.
+---
