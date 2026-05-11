@@ -81,24 +81,19 @@ Final General_h:
 
 **Child-Level Algorithm:**
 
-* 
-**Step 1:** Think of a "Mystery Rule" for choosing a snack (like "Must be sweet and crunchy").
+* **Step 1:** Think of a "Mystery Rule" for choosing a snack (like "Must be sweet and crunchy").
 
 
-* 
-**Step 2:** Start with a very strict guess (Specific) based on the first yummy snack you find.
+* **Step 2:** Start with a very strict guess (Specific) based on the first yummy snack you find.
 
 
-* 
-**Step 3:** If you see another yummy snack that is different (e.g., it's salty instead of sweet), make your guess looser so it includes both.
+* **Step 3:** If you see another yummy snack that is different (e.g., it's salty instead of sweet), make your guess looser so it includes both.
 
 
-* 
-**Step 4:** If you see a yucky snack, write down a rule that definitely kicks that snack out of the "yummy" group.
+* **Step 4:** If you see a yucky snack, write down a rule that definitely kicks that snack out of the "yummy" group.
 
 
-* 
-**Step 5:** Keep doing this until you have a list of exactly what makes a snack yummy.
+* **Step 5:** Keep doing this until you have a list of exactly what makes a snack yummy.
 
 
 
@@ -109,8 +104,6 @@ Final General_h:
 The Candidate-Elimination algorithm was successfully implemented to find all consistent hypotheses for the provided training sets.
 
 ---
-To ensure the output matches the requirements of the **ID3 algorithm** as specified in your manual, the code below is designed to generate a nested, indented text-based tree. This specifically shows how different conditions like **Outlook** and **Humidity** lead to a classification.
-
 ## **2.IMPLEMENTATION OF DECISION TREE IN ID3 ALGORITHM**
 
 ---
@@ -216,24 +209,19 @@ Outlook
 
 **Child-Level Algorithm:**
 
-* 
-**Step 1:** You are a detective sorting through old photos to guess if you will play outside today.
+* **Step 1:** You are a detective sorting through old photos to guess if you will play outside today.
 
 
-* 
-**Step 2:** You pick the most helpful question first, like "What is the Outlook?".
+* **Step 2:** You pick the most helpful question first, like "What is the Outlook?".
 
 
-* 
-**Step 3:** If the photo shows "Overcast," you always played, so the path ends.
+* **Step 3:** If the photo shows "Overcast," you always played, so the path ends.
 
 
-* 
-**Step 4:** If it shows "Rainy," you ask a second question: "Was it Windy?".
+* **Step 4:** If it shows "Rainy," you ask a second question: "Was it Windy?".
 
 
-* 
-**Step 5:** You keep asking questions until you are 100% sure of the answer.
+* **Step 5:** You keep asking questions until you are 100% sure of the answer.
 
 
 
@@ -357,24 +345,19 @@ Outlook
 
 **Child-Level Algorithm:**
 
-* 
-**Step 1:** Imagine you are picking a captain for a team.
+* **Step 1:** Imagine you are picking a captain for a team.
 
 
-* 
-**Step 2:** ID3 just looks at who is the strongest, but C4.5 is smarter; it looks at who is strong but also who is fair (it uses **Gain Ratio**).
+* **Step 2:** ID3 just looks at who is the strongest, but C4.5 is smarter; it looks at who is strong but also who is fair (it uses **Gain Ratio**).
 
 
-* 
-**Step 3:** It asks a question like "What is the weather?".
+* **Step 3:** It asks a question like "What is the weather?".
 
 
-* 
-**Step 4:** It makes sure that a question with too many tiny answers (like "What is the exact time?") doesn't win just because it's specific.
+* **Step 4:** It makes sure that a question with too many tiny answers (like "What is the exact time?") doesn't win just because it's specific.
 
 
-* 
-**Step 5:** It keeps branching out until every player has a spot on the field.
+* **Step 5:** It keeps branching out until every player has a spot on the field.
 
 
 
