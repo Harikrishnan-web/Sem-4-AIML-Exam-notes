@@ -996,49 +996,20 @@ Installation was successful.
 ---
 ## 9.Implement Paging Technique of Memory Management
 
-## Implement Paging Technique of Memory Management
-
 **Aim**
 To implement the paging technique of memory management to calculate the physical address from a given logical address based on page table mapping.
 
 **Algorithm**
 
-1. 
-**Input Memory Configuration:** Enter the total physical memory size and the fixed page size.
-
-
-2. 
-**Calculate Availability:** Divide the total memory by the page size to determine the total number of available pages (frames) in memory.
-
-
-3. 
-**Process Definition:** Input the number of processes and the specific number of pages required for each process.
-
-
-4. 
-**Capacity Check:** For each process, ensure the required pages do not exceed the remaining available frames; if they do, indicate that memory is full.
-
-
-5. 
-**Page Table Entry:** Input the frame numbers for each process to map where its logical pages reside in physical memory.
-
-
-6. 
-**Address Request:** Input a logical address consisting of the process number, page number, and offset.
-
-
-7. 
-**Input Validation:** Check if the requested process, page, or offset is within the valid allocated range.
-
-
-8. 
-**Compute Address:** Calculate the physical address using the formula: $Physical\ Address = (Frame\ Number \times Page\ Size) + Offset$.
-
-
-9. 
-**Output Results:** Display the final calculated physical address.
-
-
+1. **Memory Setup:** Input the total physical memory size and the fixed page size to calculate the total number of available frames (memory slots).
+2. **Process Allocation:** Enter the number of processes and the specific number of pages required for each process.
+3. **Availability Check:** Verify if the required pages for a process can fit into the remaining free frames; if not, terminate allocation with a "Memory is Full" message.
+4. **Page Table Entry:** For each process, manually input the frame numbers where its pages are stored to build the Page Table.
+5. **Address Request:** Input a logical address consisting of the process ID, the page number within that process, and the offset (displacement).
+6. **Validation:** Ensure the process ID, page number, and offset are within the bounds of the allocated memory.
+7. **Address Translation:** Locate the Frame Number from the Page Table using the process ID and page number.
+8. **Physical Address Calculation:** Compute the final address using the formula: $Physical\ Address = (Frame\ Number \times Page\ Size) + Offset$.
+9. **Output:** Display the resulting physical address.
 
 **C Program**
 
@@ -1099,6 +1070,197 @@ Enter pagetable for p[2] -- 2 4
 Enter Logical Address to find Physical Address 
 Enter process no. and pagenumber and offset -- 1 2 3
 The Physical Address is -- 73
+
+```
+---
+## 10B.Implement Page Replacement Algorithms: LRU
+
+**Aim**
+To implement the Least Recently Used (LRU) page replacement algorithm to simulate memory management and calculate the total number of page faults.
+
+**Algorithm**
+
+1. **Initialize Memory:** Input the number of frames available in physical memory and the total number of pages in the reference string.
+2. **Input Reference String:** Enter the sequence of page requests (reference string) made by the processor.
+3. **Frame Tracking:** Maintain an array for frames (initialized to -1) and a counter or timestamp array to track when each page was last used.
+4. **Page Check:** For each page in the reference string:
+* If the page is already present in a frame (**Page Hit**), update its timestamp to the current counter value.
+* If the page is not present (**Page Fault**):
+* If there is an empty frame, place the page there and record the timestamp.
+* If all frames are full, identify the page that has the oldest timestamp (least recently used).
+* Replace that oldest page with the new page and update the timestamp.
+
+
+
+
+5. **Fault Counting:** Increment the fault counter every time a page is not found in the frames.
+6. **Display Status:** After each request, display the current state of the frames.
+7. **Output Results:** Print the total number of page faults occurred during the simulation.
+
+**C Program**
+
+```c
+#include <stdio.h>
+
+int findLRU(int time[], int n) {
+    int i, minimum = time[0], pos = 0;
+    for (i = 1; i < n; ++i) {
+        if (time[i] < minimum) {
+            minimum = time[i];
+            pos = i;
+        }
+    }
+    return pos;
+}
+
+int main() {
+    int no_of_frames, no_of_pages, frames[10], pages[30];
+    int counter = 0, time[10], flag1, flag2, i, j, pos, faults = 0;
+
+    printf("Enter number of frames: ");
+    scanf("%d", &no_of_frames);
+    printf("Enter number of pages: ");
+    scanf("%d", &no_of_pages);
+    printf("Enter reference string: ");
+    for (i = 0; i < no_of_pages; ++i)
+        scanf("%d", &pages[i]);
+
+    for (i = 0; i < no_of_frames; ++i)
+        frames[i] = -1;
+
+    for (i = 0; i < no_of_pages; ++i) {
+        flag1 = flag2 = 0;
+        for (j = 0; j < no_of_frames; ++j) {
+            if (frames[j] == pages[i]) {
+                counter++;
+                time[j] = counter;
+                flag1 = flag2 = 1;
+                break;
+            }
+        }
+        if (flag1 == 0) {
+            for (j = 0; j < no_of_frames; ++j) {
+                if (frames[j] == -1) {
+                    counter++;
+                    faults++;
+                    frames[j] = pages[i];
+                    time[j] = counter;
+                    flag2 = 1;
+                    break;
+                }
+            }
+        }
+        if (flag2 == 0) {
+            pos = findLRU(time, no_of_frames);
+            counter++;
+            faults++;
+            frames[pos] = pages[i];
+            time[pos] = counter;
+        }
+        printf("\n");
+        for (j = 0; j < no_of_frames; ++j)
+            printf("%d\t", frames[j]);
+    }
+    printf("\n\nTotal Page Faults = %d\n", faults);
+    return 0;
+}
+
+```
+
+**Sample Output**
+
+```text
+Enter number of frames: 3
+Enter number of pages: 7
+Enter reference string: 1 2 3 1 4 5 2
+
+1	-1	-1	
+1	2	-1	
+1	2	3	
+1	2	3	
+1	4	3	
+5	4	3	
+5	4	2	
+
+Total Page Faults = 6
+
+```
+---
+## 10.A Implement Page Replacement Algorithms: FIFO
+
+**Aim**
+To implement the First-In, First-Out (FIFO) page replacement algorithm to simulate how the operating system manages memory pages and to calculate the total number of page faults.
+
+**Algorithm**
+
+1. **Initialize Memory:** Input the total number of frames available in the physical memory and the total number of pages in the reference string.
+2. **Input Reference String:** Enter the sequence of pages requested by the CPU.
+3. **Setup Tracking:** Create an array for frames (initialized to -1 to indicate they are empty) and a pointer/index (initially at 0) to track which frame was filled first.
+4. **Process Requests:** For each page in the reference string:
+* **Check Availability:** Search the current frames to see if the page is already present.
+* **Page Hit:** If the page is found, move to the next request (no action needed).
+* **Page Fault:** If the page is not found:
+* Increment the page fault counter.
+* Replace the page at the current pointer position with the new page.
+* Increment the pointer using the formula: $Pointer = (Pointer + 1)\ \%\ Number\ of\ Frames$.
+
+
+
+
+5. **Output Results:** After processing the entire string, display the total count of page faults.
+
+**C Program**
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int pagefault(int a[], int frame[], int n, int no) {
+    int i, j = 0, count = 0, k;
+    for (i = 0; i < no; i++)
+        frame[i] = -1;
+
+    for (i = 0; i < n; i++) {
+        int avail = 0;
+        for (k = 0; k < no; k++) {
+            if (frame[k] == a[i])
+                avail = 1;
+        }
+        if (avail == 0) {
+            frame[j] = a[i];
+            j = (j + 1) % no;
+            count++;
+        }
+    }
+    return count;
+}
+
+int main() {
+    int n, no, fault, i;
+    int *a, *frame;
+    printf("ENTER THE NUMBER OF PAGES: ");
+    scanf("%d", &n);
+    a = (int*)malloc(n * sizeof(int));
+    printf("ENTER THE PAGE NUMBER: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    printf("ENTER THE NUMBER OF FRAMES: ");
+    scanf("%d", &no);
+    frame = (int*)malloc(no * sizeof(int));
+    fault = pagefault(a, frame, n, no);
+    printf("Page Faults: %d\n", fault);
+    return 0;
+}
+
+```
+
+**Sample Output**
+
+```text
+ENTER THE NUMBER OF PAGES: 7
+ENTER THE PAGE NUMBER: 1 2 3 1 4 5 2
+ENTER THE NUMBER OF FRAMES: 3
+Page Faults: 6
 
 ```
 ---
