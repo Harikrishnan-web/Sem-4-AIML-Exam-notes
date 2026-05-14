@@ -129,3 +129,70 @@ Operating Systems Lab Learning VIM editor commands.
 ```
 
 ---
+## 2.Linux File System Hierarchic Commands
+
+**Aim**
+To implement and understand Linux commands used for managing the file system hierarchy, including moving, renaming, permission handling, and visualizing directory structures.
+
+**Algorithm**
+
+1. **File Management:** Use the `mv` command to either relocate files to different directories or rename them within the same directory.
+2. **File Creation:** Generate new, empty files using the `touch` command to establish placeholders in the hierarchy.
+3. **Permission Control:** Modify access levels using `chmod` to define who can read, write, or execute a file.
+4. **Ownership Assignment:** Use `chown` to change the user ownership of specific files or directories.
+5. **Storage Analysis:** Execute `df` to review the disk space usage across different mounted file systems.
+6. **Structural Visualization:** Use the `tree` command to display a recursive, visual representation of directories and files.
+
+**Linux Commands**
+
+* **mv (Move/Rename)**
+* **Function:** Moves files to a new location or renames them.
+* **Step:** Type `mv` followed by the source filename and the destination filename/path.
+
+
+* **touch (Create Empty File)**
+* **Function:** Creates a new empty file if it doesn't exist.
+* **Step:** Type `touch` followed by the desired filename.
+
+
+* **chmod (Change Permissions)**
+* **Function:** Changes the access permissions of a file using numeric or symbolic modes.
+* **Step:** Type `chmod` followed by the permission code (e.g., 755) and the filename.
+
+
+* **chown (Change Owner)**
+* **Function:** Changes the owner of a file or directory.
+* **Step:** Type `chown` followed by the username and the filename.
+
+
+* **df (Disk Free)**
+* **Function:** Displays the amount of available and used disk space on file systems.
+* **Step:** Type `df -h` to see the space in a human-readable format (GB/MB).
+
+
+* **tree**
+* **Function:** Displays the directory structure in a visual tree format.
+* **Step:** Type `tree` for the current folder or `tree directory_name` for a specific path.
+
+
+
+**Sample Output**
+
+```text
+student@workstation:~$ mv copy.txt copy1.txt
+student@workstation:~$ touch sample.txt
+student@workstation:~$ chmod 755 sample.txt
+student@workstation:~$ df -h
+Filesystem      Size  Used  Avail Use% Mounted on
+/dev/sda3        20G  6.6G    14G  34% /
+student@workstation:~$ tree sample
+sample
+├── app
+├── base
+├── operating
+└── system
+1 directory, 4 files
+
+```
+
+---
