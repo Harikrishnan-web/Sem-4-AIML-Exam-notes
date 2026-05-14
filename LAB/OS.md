@@ -580,3 +580,80 @@ root@workstation:~# ls -l demo.txt
 ```
 ---
 ## 5A Job Scheduling in Linux using at
+**Aim**
+To schedule and manage non-recurring one-time tasks in the Linux environment using the `at` utility and to manage the scheduled job queue.
+
+**Algorithm**
+
+1. **Tool Installation:** Install the `at` package if it is not already present on the system.
+2. **Service Initialization:** Start the background daemon `atd` and enable it to ensure it runs automatically on system boot.
+3. **Execution Time Specification:** Define the specific time or date for the task execution using the `at` command.
+4. **Command Input:** Enter the desired shell commands to be executed at the scheduled time within the interactive `at` prompt.
+5. **Job Commitment:** Save the job using the termination sequence (Ctrl+D) to place it in the execution queue.
+6. **Queue Monitoring:** Verify the status and job ID of scheduled tasks using the queue listing command.
+7. **Cleanup:** If a task is no longer required, remove it from the queue using its specific job ID.
+
+**Commands and Explanation**
+
+1. **sudo apt install at**
+* **Function:** Downloads and installs the `at` utility from the repository.
+* **Step:** Run this command to ensure the software is available on your Linux distribution.
+
+
+2. **sudo systemctl start atd**
+* **Function:** Starts the `at` daemon, which is the background process responsible for running scheduled jobs.
+* **Step:** Execute this to activate the scheduling service immediately.
+
+
+3. **sudo systemctl enable atd**
+* **Function:** Configures the `atd` service to start automatically whenever the system boots up.
+* **Step:** This is a crucial step to ensure scheduled jobs are not missed after a system restart.
+
+
+4. **at 17:30**
+* **Function:** Opens an interactive prompt to schedule a task for 5:30 PM.
+* **Step:** Type the time and press Enter; you will see the `at>` prompt.
+
+
+5. **echo "Job Executed" > output.txt**
+* **Function:** The actual task to be performed at the scheduled time.
+* **Step:** Type the command at the `at>` prompt and press Enter.
+
+
+6. **Ctrl + D**
+* **Function:** Signals the end of input (EOF) and saves the job.
+* **Step:** Press this key combination to submit the task to the queue.
+
+
+7. **atq**
+* **Function:** Lists all pending jobs in the queue.
+* **Step:** Run this to see your Job ID, scheduled time, and user.
+
+
+8. **atrm 3**
+* **Function:** Removes a specific job from the queue.
+* **Step:** Use `atrm` followed by the Job ID (e.g., 3) to cancel a scheduled task.
+
+
+
+**Sample Input**
+
+```text
+at 17:30
+warning: commands will be executed using /bin/sh
+at> echo "Hello, this is a scheduled job" > ~/job_output.txt
+at> <EOT>
+
+```
+
+**Sample Output**
+
+```text
+job 3 at Fri Apr 17 17:30:00 2026
+
+student@workstation:~$ cat ~/job_output.txt
+Hello, this is a scheduled job
+
+```
+---
+## 5B Job Scheduling in Linux using CRON Job
