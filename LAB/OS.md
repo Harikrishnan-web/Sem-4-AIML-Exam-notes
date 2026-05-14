@@ -386,7 +386,7 @@ P3      1  4  5
 ```
 
 ---
-## User and Permission Management: Create and manage users and groups 
+## 4A.User and Permission Management: Create and manage users and groups 
 
 **Aim**
 To perform user and group management in Linux by creating accounts, setting passwords, managing home directories, and organizing users into groups using administrative commands.
@@ -486,3 +486,97 @@ root
 
 ```
 ---
+## 4B.User and Permission Management: Configure file permissions, ownership and group ownership
+**Aim**
+To manage and configure file security in Linux by modifying file permissions using numeric and symbolic modes, and changing user and group ownership of files and directories.
+
+**Algorithm**
+
+1. **Identify Attributes:** Use the long listing command to check current permissions and owners of a file.
+2. **Permission Modification (Numeric):** Apply octal values (e.g., 755) to set absolute read, write, and execute permissions for owner, group, and others.
+3. **Permission Modification (Symbolic):** Use specific symbols (u, g, o) and operators (+, -, =) to add or remove specific access rights.
+4. **Ownership Transfer:** Change the specific user who owns the file to a different account.
+5. **Group Assignment:** Assign the file to a specific group to manage team-based access.
+6. **Recursive Application:** Apply permission or ownership changes to an entire directory tree including all sub-files and sub-folders.
+7. **Special Bit Configuration:** Set advanced permissions like SUID, SGID, or the Sticky Bit for specialized execution and deletion behavior.
+
+**Commands and Explanation**
+
+1. **ls -l demo.txt**
+* **Function:** Displays detailed information including permissions, owner, and group.
+* **Step:** Run `ls -l` followed by the filename to view the current security metadata.
+
+
+2. **chmod 755 demo.txt**
+* **Function:** Changes permissions using numeric (octal) mode.
+* **Step:** Run `chmod 755` where 7 is for owner (rwx), 5 for group (r-x), and 5 for others (r-x).
+
+
+3. **chmod u+x demo.txt**
+* **Function:** Adds execute permission for the user (owner) using symbolic mode.
+* **Step:** Use `u+x` to grant execution rights without affecting other bits.
+
+
+4. **chown user12 demo.txt**
+* **Function:** Changes the owner of the file to "user12".
+* **Step:** Type `chown` followed by the new username and the file name.
+
+
+5. **chgrp group1 demo.txt**
+* **Function:** Changes the group ownership of the file to "group1".
+* **Step:** Type `chgrp` followed by the group name and the file name.
+
+
+6. **chown user12:group1 demo.txt**
+* **Function:** Changes both the owner and the group in a single command.
+* **Step:** Use the `user:group` syntax to update both attributes simultaneously.
+
+
+7. **chmod -R 755 /home/student/data**
+* **Function:** Changes permissions recursively for a directory and all its contents.
+* **Step:** Add the `-R` flag to ensure every file inside the folder is updated.
+
+
+8. **chmod u+s filename**
+* **Function:** Sets the SUID (Set User ID) bit.
+* **Step:** Run `chmod u+s` so the file executes with the permissions of the owner.
+
+
+9. **chmod g+s directory**
+* **Function:** Sets the SGID (Set Group ID) bit on a directory.
+* **Step:** Run `chmod g+s` so new files created inside inherit the directory's group.
+
+
+10. **chmod +t directory**
+* **Function:** Sets the Sticky Bit on a directory.
+* **Step:** Run `chmod +t` to prevent users from deleting files owned by others in a shared folder.
+
+
+
+**Sample Input**
+
+```text
+ls -l demo.txt
+chmod 755 demo.txt
+chown user12 demo.txt
+chgrp group1 demo.txt
+ls -l demo.txt
+
+```
+
+**Sample Output**
+
+```text
+root@workstation:~# ls -l demo.txt
+-rw-r--r-- 1 root root Feb 22 10:31 demo.txt
+
+root@workstation:~# chmod 755 demo.txt
+root@workstation:~# chown user12 demo.txt
+root@workstation:~# chgrp group1 demo.txt
+
+root@workstation:~# ls -l demo.txt
+-rwxr-xr-x 1 user12 group1 Feb 22 10:31 demo.txt
+
+```
+---
+## 5A Job Scheduling in Linux using at
