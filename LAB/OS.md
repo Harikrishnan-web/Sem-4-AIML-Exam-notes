@@ -1,4 +1,4 @@
-## Basics of Linux Commands
+## 1A.Basics of Linux Commands
 
 **Aim**
 To explore and execute fundamental Linux commands for file management, directory navigation, and basic system interaction.
@@ -76,7 +76,7 @@ student@workstation:~$
 
 ---
 
-## Writing and Editing Text Files Using VIM Editor
+## 1B.Writing and Editing Text Files Using VIM Editor
 
 **Aim**
 To demonstrate the ability to create and modify text files using the VIM editor's distinct operational modes.
@@ -127,3 +127,5 @@ student@workstation:~$ cat sample.txt
 Operating Systems Lab Learning VIM editor commands.
 
 ```
+
+---
