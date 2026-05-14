@@ -386,3 +386,103 @@ P3      1  4  5
 ```
 
 ---
+## User and Permission Management: Create and manage users and groups 
+
+**Aim**
+To perform user and group management in Linux by creating accounts, setting passwords, managing home directories, and organizing users into groups using administrative commands.
+
+**Algorithm**
+
+1. **Gain Root Access:** Switch to the superuser or use administrative privileges to execute management commands.
+2. **User Creation:** Create new user accounts with or without default home directories using specific flags.
+3. **Security Setup:** Assign secure passwords to newly created users to enable account login.
+4. **Group Management:** Create new groups to categorize users and delete them when no longer required.
+5. **Account Modification:** Add users to secondary groups or change their primary group assignments.
+6. **Verification:** Inspect system configuration files and use identity commands to verify that changes have been applied correctly.
+7. **Cleanup:** Delete user accounts and their associated files to maintain system tidiness.
+
+**Commands and Explanation**
+
+1. **su root**
+* **Function:** Switches the current session to the root user.
+* **Step:** Run `su root` and enter the administrative password to gain full control.
+
+
+2. **useradd user5**
+* **Function:** Creates a new user account named "user5".
+* **Step:** Run `useradd user5` to add the user to the system.
+
+
+3. **useradd -m user6**
+* **Function:** Creates a new user and automatically generates a home directory.
+* **Step:** Use the `-m` flag to ensure the user has a personal space at `/home/user6`.
+
+
+4. **passwd user6**
+* **Function:** Sets or updates the password for the specified user.
+* **Step:** Run `passwd user6` and type the new password twice when prompted.
+
+
+5. **userdel -r user10**
+* **Function:** Deletes the user and removes their home directory.
+* **Step:** Use the `-r` flag to clean up all files associated with "user10".
+
+
+6. **groupadd group11**
+* **Function:** Creates a new system group.
+* **Step:** Run `groupadd group11` to create a group for team organization.
+
+
+7. **usermod -aG group1 user12**
+* **Function:** Adds an existing user to a secondary (supplementary) group.
+* **Step:** The `-aG` flag ensures the user stays in their current groups while joining "group1".
+
+
+8. **id user12**
+* **Function:** Displays the UID, GID, and group memberships for a user.
+* **Step:** Run `id user12` to confirm the group addition was successful.
+
+
+9. **cat /etc/passwd**
+* **Function:** Lists all user accounts defined in the system.
+* **Step:** View this file to see user IDs, home directories, and shell types.
+
+
+10. **cat /etc/group**
+* **Function:** Lists all groups and their members.
+* **Step:** View this file to verify group creation and user assignments.
+
+
+11. **whoami**
+* **Function:** Displays the username of the current logged-in user.
+* **Step:** Run `whoami` to confirm if you are operating as root or a standard user.
+
+
+
+**Sample Input**
+
+```text
+su root
+useradd user5
+passwd user6
+groupadd group1
+usermod -aG group1 user12
+id user12
+
+```
+
+**Sample Output**
+
+```text
+root@workstation:~# useradd user5
+root@workstation:~# passwd user6
+New password:
+Retype new password:
+passwd: password updated successfully
+root@workstation:~# id user12
+uid=1005(user12) gid=1005(user12) groups=1005(user12),1006(group1)
+root@workstation:~# whoami
+root
+
+```
+---
