@@ -1264,3 +1264,605 @@ Page Faults: 6
 
 ```
 ---
+## 10.C Implement Page Replacement Algorithms: LFU
+
+**Aim**
+To implement the Least Frequently Used (LFU) page replacement algorithm to simulate memory management and calculate the total number of page faults.
+
+**Algorithm**
+
+1. **Initialize Memory:** Input the number of frames available in physical memory and the total number of pages in the reference string.
+2. **Input Reference String:** Enter the sequence of page requests made by the processor.
+3. **Frame Tracking:** Maintain an array for frames (initialized to -1) and a frequency counter array to track how many times each page currently in a frame has been accessed.
+4. **Process Requests:** For each page in the reference string:
+* **Check Availability:** Search the current frames to see if the page is already present.
+* **Page Hit:** If the page is found, increment its specific frequency counter.
+* **Page Fault:** If the page is not found:
+* Increment the total page fault counter.
+* **Empty Frame:** If there is an empty frame, place the page there and set its frequency to 1.
+* **Replacement:** If all frames are full, identify the page with the lowest frequency. If multiple pages have the same lowest frequency, use the one that arrived earliest (FIFO).
+* Replace the identified page with the new page and reset its frequency to 1.
+
+
+
+
+5. **Output Results:** After processing all requests, display the total count of page faults.
+
+**C Program**
+
+```c
+#include <stdio.h>
+
+int main() {
+    int i, j, k, n, frameno, page[50], frame[10], flag, count = 0, count1[10] = {0};
+
+    printf("Enter number of pages: ");
+    scanf("%d", &n);
+
+    printf("Enter page reference string: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &page[i]);
+
+    printf("Enter number of frames: ");
+    scanf("%d", &frameno);
+
+    for (i = 0; i < frameno; i++)
+        frame[i] = -1;
+
+    printf("Page reference string\tFrames\n");
+    for (i = 0; i < n; i++) {
+        printf("%d\t\t\t", page[i]);
+        flag = 0;
+
+        for (j = 0; j < frameno; j++) {
+            if (page[i] == frame[j]) {
+                flag = 1;
+                count1[j]++;
+                break;
+            }
+        }
+
+        if (flag == 0) {
+            for (j = 0; j < frameno; j++) {
+                if (frame[j] == -1) {
+                    frame[j] = page[i];
+                    count1[j]++;
+                    count++;
+                    break;
+                }
+            }
+
+            if (j == frameno) {
+                int min = 0;
+                for (k = 1; k < frameno; k++) {
+                    if (count1[k] < count1[min])
+                        min = k;
+                }
+                frame[min] = page[i];
+                count1[min] = 1;
+                count++;
+            }
+        }
+
+        for (j = 0; j < frameno; j++)
+            printf("%d\t", frame[j]);
+        printf("\n");
+    }
+
+    printf("Total Page Faults: %d\n", count);
+    return 0;
+}
+
+```
+
+**Sample Output**
+
+```text
+Enter number of pages: 7
+Enter page reference string: 1 2 3 1 4 5 2
+Enter number of frames: 3
+
+Page reference string   Frames
+1                       1       -1      -1
+2                       1       2       -1
+3                       1       2       3
+1                       1       2       3
+4                       1       4       3
+5                       1       4       5
+2                       2       4       5
+
+Total Page Faults: 6
+
+```
+---
+## 11A.Create and Activate a Swap Partition
+
+**Aim**
+To create a dedicated swap partition on a storage device, format it appropriately, and activate it to extend the system's virtual memory capacity.
+
+**Algorithm**
+
+1. **Identify Disk:** List all available block devices to identify the target disk for the swap partition.
+2. **Partitioning:** Use a partitioning tool to create a new partition and set its type to "Linux swap".
+3. **Kernel Update:** Inform the operating system of the changes made to the partition table.
+4. **Formatting:** Apply the swap signature to the newly created partition using the specialized swap formatting tool.
+5. **Activation:** Enable the partition so the system can begin using it for paging.
+6. **Verification:** Check the system memory statistics to confirm the swap space has increased.
+7. **Persistence:** Append the partition details to the filesystem table to ensure the swap is activated automatically upon every reboot.
+
+**Linux Commands**
+
+1. **lsblk**
+* **Function:** Lists information about all available block devices (disks and partitions).
+* **Step:** Use this to find your disk name (e.g., `/dev/sdb`).
+
+
+2. **sudo fdisk /dev/sdb**
+* **Function:** Opens the disk manipulator for the specified drive.
+* **Step:** Inside `fdisk`:
+* Press `n` to create a new partition.
+* Press `t` and enter code `82` (Linux swap) to set the type.
+* Press `w` to write changes and exit.
+
+
+
+
+3. **sudo partprobe**
+* **Function:** Informs the OS kernel of partition table changes.
+* **Step:** Run this so the system recognizes the new `/dev/sdb1` without a reboot.
+
+
+4. **sudo mkswap /dev/sdb1**
+* **Function:** Sets up a Linux swap area on the device.
+* **Step:** This "formats" the partition specifically for swap usage.
+
+
+5. **sudo swapon /dev/sdb1**
+* **Function:** Enables the device for paging and swapping.
+* **Step:** This makes the swap active immediately.
+
+
+6. **swapon --show**
+* **Function:** Displays active swap devices and their sizes.
+* **Step:** Use this to verify the partition is being used.
+
+
+7. **free -h**
+* **Function:** Shows the amount of free and used memory in the system.
+* **Step:** Check the "Swap" row to see the updated total capacity.
+
+
+
+**Step-by-Step Execution**
+
+1. **Create Partition:** Run `sudo fdisk /dev/sdb`, follow the prompts to create a partition, change the type to `82`, and save.
+2. **Format Swap:** Run `sudo mkswap /dev/sdb1` (replace `sdb1` with your actual partition name).
+3. **Activate:** Execute `sudo swapon /dev/sdb1`.
+4. **Permanent Mount:** Open the fstab file using `sudo nano /etc/fstab` and add the line:
+`/dev/sdb1  none  swap  sw  0  0`
+
+**Sample Input**
+
+```text
+lsblk
+sudo fdisk /dev/sdb
+[Inside fdisk: n, p, 1, default, default, t, 82, w]
+sudo mkswap /dev/sdb1
+sudo swapon /dev/sdb1
+free -h
+
+```
+
+**Sample Output**
+
+```text
+Setting up swapspace version 1, size = 2 GiB (2147479552 bytes)
+no label, UUID=550e8400-e29b-41d4-a716-446655440000
+
+              total        used        free      shared  buff/cache   available
+Mem:          7.7Gi       1.2Gi       4.5Gi       120Mi       2.0Gi       6.1Gi
+Swap:         2.0Gi          0B       2.0Gi
+
+```
+---
+## 11B.Configure Logical Volume Management (LVM)
+
+**Aim**
+To create and manage a flexible storage structure using Logical Volume Management (LVM) by initializing physical volumes, grouping them into volume groups, and carving out logical volumes.
+
+**Algorithm**
+
+1. **Preparation:** Identify the raw disks or partitions available for LVM.
+2. **Physical Volume (PV) Creation:** Initialize the raw disks so the LVM driver can recognize them as usable building blocks.
+3. **Volume Group (VG) Creation:** Combine one or more Physical Volumes into a single storage pool.
+4. **Logical Volume (LV) Creation:** Slice the Volume Group into specific logical partitions that can be formatted with a filesystem.
+5. **Filesystem Formatting:** Apply a filesystem (like ext4) to the Logical Volume to make it ready for data storage.
+6. **Mounting:** Attach the formatted Logical Volume to a directory in the Linux file tree.
+7. **Verification:** Check the status and size of the PVs, VGs, and LVs to ensure the configuration is correct.
+
+**Linux Commands**
+
+1. **sudo pvcreate /dev/sdb /dev/sdc**
+* **Function:** Initializes disks as Physical Volumes.
+* **Step:** Run this first to mark your raw disks for LVM use.
+
+
+2. **sudo vgcreate vg_data /dev/sdb /dev/sdc**
+* **Function:** Creates a Volume Group named `vg_data` using the initialized PVs.
+* **Step:** This pools the capacity of both disks into one group.
+
+
+3. **sudo lvcreate -L 10G -n lv_storage vg_data**
+* **Function:** Creates a 10GB Logical Volume named `lv_storage` inside the `vg_data` group.
+* **Step:** Use the `-L` flag for size and `-n` for the name.
+
+
+4. **sudo mkfs.ext4 /dev/vg_data/lv_storage**
+* **Function:** Formats the new logical volume with the ext4 filesystem.
+* **Step:** This makes the volume usable for storing files.
+
+
+5. **sudo mkdir /mnt/lvm_disk**
+* **Function:** Creates a mount point directory.
+* **Step:** You need a folder to "hook" the disk into the system.
+
+
+6. **sudo mount /dev/vg_data/lv_storage /mnt/lvm_disk**
+* **Function:** Mounts the logical volume to the created directory.
+* **Step:** Run this to start using the disk space.
+
+
+7. **pvs, vgs, lvs**
+* **Function:** Displays summary reports for Physical Volumes, Volume Groups, and Logical Volumes respectively.
+* **Step:** Use these commands to verify your setup.
+
+
+
+**Step-by-Step Execution**
+
+1. **Initialize Disks:** Identify disks using `lsblk`, then run `pvcreate`.
+2. **Build Pool:** Group the disks using `vgcreate`.
+3. **Create Volume:** Slice the pool into the desired size using `lvcreate`.
+4. **Format and Use:** Run `mkfs.ext4`, create a folder, and `mount` the volume.
+
+**Sample Input**
+
+```text
+sudo pvcreate /dev/sdb
+sudo vgcreate my_vg /dev/sdb
+sudo lvcreate -L 5G -n my_lv my_vg
+sudo mkfs.ext4 /dev/my_vg/my_lv
+sudo mount /dev/my_vg/my_lv /mnt
+lvs
+
+```
+
+**Sample Output**
+
+```text
+Physical volume "/dev/sdb" successfully created.
+Volume group "my_vg" successfully created.
+Logical volume "my_lv" created.
+mke2fs 1.46.5 (30-Dec-2021)
+Creating filesystem with 1310720 4k blocks...
+
+  LV    VG    Attr       LSize Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  my_lv my_vg -wi-a----- 5.00g                                                    
+
+```
+---
+## 12A.Configure Basic Network Settings (IP, DNS, Gateway)
+
+**Aim**
+To manually configure and verify essential network parameters including the IP address, subnet mask, default gateway, and DNS servers on a Linux system.
+
+**Algorithm**
+
+1. **Identify Interface:** Determine the name of the active network interface (e.g., eth0, ens33) currently recognized by the system.
+2. **Assign IP Address:** Set a specific static IP address and subnet mask to the identified network interface.
+3. **Set Default Gateway:** Define the router's IP address that the system will use to access external networks.
+4. **Configure DNS:** Update the name server configuration file to ensure the system can resolve domain names into IP addresses.
+5. **Apply Changes:** Restart the networking service or bring the interface up/down to commit the new settings.
+6. **Verification:** Test connectivity using tools like ping and check the current routing table.
+
+**Linux Commands**
+
+1. **ip addr show**
+* **Function:** Displays all network interfaces and their currently assigned IP addresses.
+* **Step:** Run this first to find your interface name.
+
+
+2. **sudo ip addr add 192.168.1.50/24 dev eth0**
+* **Function:** Assigns the static IP `192.168.1.50` with a 24-bit subnet mask to interface `eth0`.
+* **Step:** Replace `eth0` with your actual interface name found in step 1.
+
+
+3. **sudo ip route add default via 192.168.1.1**
+* **Function:** Sets the default gateway to `192.168.1.1`.
+* **Step:** This allows the system to communicate with devices outside the local network.
+
+
+4. **sudo nano /etc/resolv.conf**
+* **Function:** Opens the DNS resolver configuration file for editing.
+* **Step:** Add `nameserver 8.8.8.8` to this file to use Google’s DNS.
+
+
+5. **ping -c 4 google.com**
+* **Function:** Sends 4 packets to a domain to test internet connectivity and DNS resolution.
+* **Step:** Final check to ensure the configuration is working.
+
+
+
+**Step-by-Step Execution**
+
+1. **View Interface:** Run `ip addr` to see names like `enp0s3`.
+2. **Set Static IP:** Use `sudo ip addr add [IP/Mask] dev [Interface]`.
+3. **Set Route:** Run `sudo ip route add default via [Gateway_IP]`.
+4. **Edit DNS:** Type `sudo nano /etc/resolv.conf`, enter `nameserver 8.8.8.8`, and save (Ctrl+O, Enter, Ctrl+X).
+5. **Check Status:** Use `ip route show` to confirm the gateway and `ping` to confirm the connection.
+
+**Sample Input**
+
+```text
+ip addr show
+sudo ip addr add 192.168.1.100/24 dev ens33
+sudo ip route add default via 192.168.1.1
+sudo nano /etc/resolv.conf
+[Add line: nameserver 8.8.8.8]
+ping -c 3 8.8.8.8
+
+```
+
+**Sample Output**
+
+```text
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500
+    inet 192.168.1.100/24 scope global ens33
+
+default via 192.168.1.1 dev ens33 proto static 
+
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=14.2 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=13.5 ms
+
+--- 8.8.8.8 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+
+```
+---
+## 12B.Configure and Verify NFS Server and Client
+
+**Aim**
+To install, configure, and verify a Network File System (NFS) to allow a client machine to access and share directories across a network as if they were local.
+
+**Algorithm**
+
+1. **Host Setup:** Install the NFS kernel server package on the host machine and create a dedicated directory for sharing.
+2. **Export Configuration:** Modify the exports file to define which client IPs have access and set specific permissions (Read/Write, Sync).
+3. **Service Initialization:** Export the shared directories and restart the NFS service to apply the configuration.
+4. **Firewall Adjustment:** Configure the host firewall to allow NFS traffic from the client.
+5. **Client Setup:** Install the NFS common utilities on the client machine and create a local mount point.
+6. **Mounting:** Execute the mount command to link the remote server directory to the local client folder.
+7. **Verification:** Create a file on the client side and verify its presence on the server to confirm successful bi-directional synchronization.
+
+**Linux Commands**
+
+**On the NFS Server:**
+
+1. **sudo apt install nfs-kernel-server**
+* **Function:** Installs the necessary server-side software for NFS.
+
+
+2. **sudo mkdir -p /mnt/nfs_share**
+* **Function:** Creates a directory that will be shared across the network.
+
+
+3. **sudo chown nobody:nogroup /mnt/nfs_share**
+* **Function:** Adjusts permissions so that any client can access the folder.
+
+
+4. **sudo nano /etc/exports**
+* **Function:** Opens the configuration file where sharing rules are defined.
+* **Step:** Add the line: `/mnt/nfs_share [Client_IP](rw,sync,no_subtree_check)`
+
+
+5. **sudo exportfs -a && sudo systemctl restart nfs-kernel-server**
+* **Function:** Makes the shared directory available and restarts the service.
+
+
+
+**On the NFS Client:**
+
+1. **sudo apt install nfs-common**
+* **Function:** Installs client-side tools to recognize and mount NFS shares.
+
+
+2. **sudo mkdir -p /mnt/nfs_client**
+* **Function:** Creates a local folder where the remote share will appear.
+
+
+3. **sudo mount [Server_IP]:/mnt/nfs_share /mnt/nfs_client**
+* **Function:** Connects the remote server directory to the local mount point.
+
+
+4. **df -h**
+* **Function:** Displays disk usage; used here to verify the NFS mount is active.
+
+
+
+**Step-by-Step Execution**
+
+1. **Server side:** Install the server package, create `/var/nfs/general`, and edit `/etc/exports` to grant your client IP `rw` access.
+2. **Apply on Server:** Run `sudo exportfs -ra` to update the share list without rebooting.
+3. **Client side:** Install `nfs-common`, create a mount folder, and use the `mount` command with the server's IP.
+4. **Test:** Create a file using `touch /mnt/nfs_client/test.txt` and check if it appears on the server in `/mnt/nfs_share`.
+
+**Sample Input**
+
+```text
+[Server] sudo exportfs -v
+[Client] sudo mount 192.168.1.10:/mnt/nfs_share /mnt/nfs_client
+[Client] touch /mnt/nfs_client/hello_server.txt
+
+```
+
+**Sample Output**
+
+```text
+/mnt/nfs_share  192.168.1.50(rw,wdelay,root_squash,no_subtree_check)
+
+student@client:~$ df -h | grep nfs
+192.168.1.10:/mnt/nfs_share   50G   2G   48G   5% /mnt/nfs_client
+
+student@server:~$ ls /mnt/nfs_share
+hello_server.txt
+
+```
+---
+## 13A.Perform Root Password Recovery Using Rescue/Emergency Mode
+
+**Aim**
+To regain administrative access to a Linux system by bypassing the standard login process using emergency/rescue modes to reset a lost or forgotten root password.
+
+**Algorithm**
+
+1. **Interrupt Boot:** Restart the system and access the GRUB bootloader menu during the initial startup phase.
+2. **Modify Boot Parameters:** Edit the boot entry to change the kernel's behavior, directing it to a shell environment instead of the standard graphical or multi-user login.
+3. **Initiate Emergency Mode:** Instruct the kernel to mount the root filesystem and launch a privileged shell (`/bin/sh` or `/bin/bash`).
+4. **Remount Filesystem:** Change the status of the root partition from "read-only" to "read-write" to allow modifications to system files.
+5. **Password Reset:** Execute the password utility to define a new credential for the root account.
+6. **SELinux Context (Optional):** Update security labels if the system uses SELinux to ensure the new password file is accepted upon reboot.
+7. **System Resumption:** Flush changes to the disk and restart the system to login with the new password.
+
+**Linux Commands**
+
+1. **rw init=/bin/bash**
+* **Function:** Kernel parameters added to the boot line to mount the system as read-write and launch a shell.
+* **Step:** Append this to the end of the line starting with `linux` or `linux16` in the GRUB editor.
+
+
+2. **mount -o remount,rw /**
+* **Function:** Remounts the root directory with write permissions.
+* **Step:** Run this immediately after the bash shell appears if the drive is still read-only.
+
+
+3. **passwd root**
+* **Function:** Invokes the password reset utility for the root user.
+* **Step:** Enter your new password twice when prompted.
+
+
+4. **touch /.autorelabel**
+* **Function:** Triggers an SELinux file system relabel on the next boot.
+* **Step:** Essential for systems like RHEL, CentOS, or Fedora to prevent login failures after a reset.
+
+
+5. **exec /sbin/init**
+* **Function:** Resumes the normal boot process.
+* **Step:** Run this or use `reboot -f` to exit the emergency shell.
+
+
+
+**Step-by-Step Execution**
+
+1. **Enter GRUB:** Reboot and tap `Shift` or `Esc` to see the menu. Highlight the kernel and press `e`.
+2. **Edit Line:** Find the line starting with `linux`. Go to the end, remove `rhgb quiet` (if present), and type `rd.break` (for RHEL) or `init=/bin/bash` (for Ubuntu/Debian).
+3. **Boot:** Press `Ctrl+X` or `F10` to boot with these temporary settings.
+4. **Write Access:** At the prompt, type `mount -o remount,rw /`.
+5. **Change Pass:** Type `passwd root`, enter the new password, and confirm.
+6. **Finalize:** Type `touch /.autorelabel` (if required), then `exit` and reboot.
+
+**Sample Input**
+
+```text
+[At GRUB Edit Screen]: linux /vmlinuz... root=UUID... rw init=/bin/bash
+[At Shell Prompt]:
+passwd root
+Enter new UNIX password: 
+Retype new UNIX password: 
+reboot -f
+
+```
+
+**Sample Output**
+
+```text
+passwd: password updated successfully
+Rebooting...
+[System boots to login screen, root accepts new password]
+
+```
+---
+## 13B.Deploy an Application by Cloning a GitHub Repository
+
+**Aim**
+To download an application's source code from a remote GitHub repository to a local Linux environment and prepare it for execution.
+
+**Algorithm**
+
+1. **Environment Check:** Verify that Git is installed on the host system.
+2. **Repository Identification:** Locate the target repository on GitHub and obtain its HTTPS or SSH clone URL.
+3. **Authentication (Optional):** Set up credentials or SSH keys if the repository is private.
+4. **Cloning:** Execute the clone command to pull a complete copy of the remote repository, including its history and branches.
+5. **Navigation:** Enter the newly created directory containing the application files.
+6. **Dependency Installation:** Run the specific package manager (like `npm` or `pip`) to install the required libraries listed in the source.
+7. **Execution:** Launch the application using the appropriate runtime command.
+
+**Linux Commands**
+
+1. **git --version**
+* **Function:** Checks if the Git version control system is installed.
+* **Step:** Run this first; if not found, install it using `sudo apt install git`.
+
+
+2. **git clone [https://github.com/user/repository.git**](https://github.com/user/repository.git)
+* **Function:** Creates a local copy of the remote repository.
+* **Step:** Copy the URL from the "Code" button on GitHub and paste it after the clone command.
+
+
+3. **cd repository**
+* **Function:** Changes the current working directory to the application folder.
+* **Step:** Use the name of the folder created by the clone command.
+
+
+4. **ls -a**
+* **Function:** Lists all files, including hidden configuration files (like `.env` or `.git`).
+* **Step:** Verify that all project files were successfully downloaded.
+
+
+5. **git pull origin main**
+* **Function:** Fetches and integrates changes from the remote server.
+* **Step:** Use this if the local code needs to be updated to the latest version.
+
+
+
+**Step-by-Step Execution**
+
+1. **Install Git:** Use `sudo apt update && sudo apt install git -y`.
+2. **Get Code:** Run `git clone [URL]`. For example: `git clone https://github.com/octocat/Spoon-Knife`.
+3. **Enter Project:** Type `cd Spoon-Knife`.
+4. **Install Dependencies:** Depending on the project, run commands like `npm install` (for Node.js) or `pip install -r requirements.txt` (for Python).
+5. **Run:** Start the app using `python3 app.py` or `npm start`.
+
+**Sample Input**
+
+```text
+git clone https://github.com/example/web-app.git
+cd web-app
+ls
+cat README.md
+
+```
+
+**Sample Output**
+
+```text
+Cloning into 'web-app'...
+remote: Enumerating objects: 45, done.
+remote: Total 45 (delta 0), reused 0 (delta 0), pack-reused 45
+Unpacking objects: 100% (45/45), 12.35 KiB | 1.23 MiB/s, done.
+
+[File List]:
+app.py  requirements.txt  static/  templates/  README.md
+
+```
+---
